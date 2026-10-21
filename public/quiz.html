@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Care Quiz - Exotic Pets Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>  
+    .quiz-wrapper {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+    .quiz-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* When the Empty cart state */
+    .quiz-empty {
+      text-align: center;
+      padding: 80px 32px;
+    }
+    .quiz-empty .empty-icon { font-size: 4rem; margin-bottom: 16px; }
+    .quiz-empty h2 { font-size: 1.8rem; color: #111827; margin-bottom: 10px; }
+    .quiz-empty p  { color: #6b7280; margin-bottom: 28px; }
+    .quiz-empty a  {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #2563eb;
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* Intro state */
+    .quiz-intro { padding: 48px 48px 40px; text-align: center; }
+    .quiz-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .quiz-intro h1 { font-size: 2rem; color: #111827; margin-bottom: 12px; }
+    .quiz-intro p  { color: #6b7280; font-size: 1rem; max-width: 520px; margin: 0 auto 32px; line-height: 1.6; }
+
+    .quiz-animal-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    .animal-chip {
+      padding: 8px 18px;
+      background: #f3f4f6;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .quiz-info-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .quiz-info-chip {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      min-width: 120px;
+    }
+    .quiz-info-chip .chip-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .quiz-info-chip p { font-size: 0.85rem; color: #374151; font-weight: 600; margin: 0; }
+
+    .quiz-btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-outline {
+      padding: 13px 28px;
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      background: white;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-family: inherit;
+    }
+    .btn-outline:hover { background: #eff6ff; }
+    .btn-primary {
+      padding: 13px 28px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-green {
+      padding: 13px 28px;
+      background: #16a34a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-green:hover { background: #15803d; }
+
+    /* This are the Question state */
+    .quiz-question-wrap { padding: 40px 48px 32px; }
+
+    .quiz-progress-bar {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+    .quiz-progress-label {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .quiz-animal-tag {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .quiz-q-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-size: 0.95rem;
+      color: #374151;
+      background: white;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .quiz-option:hover { border-color: #2563eb; background: #eff6ff; }
+    .quiz-option.selected { border-color: #2563eb; background: #eff6ff; color: #1e40af; }
+    .option-letter {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      color: #374151;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .quiz-option.selected .option-letter { background: #2563eb; color: white; }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+    }
+    .btn-back {
+      padding: 12px 24px;
+      background: #f3f4f6;
+      color: #374151;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-back:hover { background: #e5e7eb; }
+
+    /* these are the Result state */
+    .quiz-result-wrap { padding: 48px; text-align: center; }
+    .result-icon { font-size: 4rem; margin-bottom: 12px; }
+    .quiz-result-wrap h2 { font-size: 2rem; margin-bottom: 8px; }
+    .quiz-result-wrap h2.passed { color: #15803d; }
+    .quiz-result-wrap h2.failed { color: #dc2626; }
+    .score-display {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #2563eb;
+      margin: 10px 0 16px;
+    }
+    .result-msg { color: #6b7280; font-size: 1rem; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    .answers-review {
+      text-align: left;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .answer-row {
+      display: flex;
+      gap: 14px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f3f4f6;
+      align-items: flex-start;
+    }
+    .answer-row:last-child { border-bottom: none; }
+    .answer-row.correct { background: #f0fdf4; }
+    .answer-row.wrong   { background: #fef2f2; }
+    .answer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+    .answer-animal { font-size: 0.75rem; font-weight: 700; color: #2563eb; margin-bottom: 4px; }
+    .answer-q  { font-weight: 600; color: #111827; font-size: 0.9rem; margin-bottom: 4px; }
+    .answer-yours   { color: #dc2626; font-size: 0.83rem; margin-bottom: 2px; }
+    .answer-correct { color: #15803d; font-weight: 600; font-size: 0.83rem; margin-bottom: 2px; }
+    .answer-explain { color: #6b7280; font-size: 0.8rem; font-style: italic; }
+
+    .result-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 640px) {
+      .quiz-intro, .quiz-question-wrap, .quiz-result-wrap { padding: 28px 20px; }
+      .quiz-q-text { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="/images/logo.png" alt="Critter Kingdom" class="logo-img" style="height:44px;width:auto;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />
+      <span class="logo-text">Critter Kingdom</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Products</a>
+      <a href="/care-guide">Care Guide</a>
+      <a href="/cart">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="quiz-wrapper">
+      <div class="quiz-box" id="quiz-box">
+        <div class="quiz-empty" id="state-empty" style="display:none">
+          <div class="empty-icon">🛒</div>
+          <h2>Your cart is empty</h2>
+          <p>Add at least one animal to your cart before taking the care quiz.</p>
+          <a href="/">Browse Animals</a>
+        </div>
+        <div id="state-loading" style="padding:60px;text-align:center;color:#6b7280;">Loading your quiz...</div>
+        <div id="state-intro"    style="display:none"></div>
+        <div id="state-question" style="display:none"></div>
+        <div id="state-result"   style="display:none"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Exotic Pets Store. Created by Mollie, Megha, Abizar, Danny, and Jivitesh.</p>
+  </footer>
+
+  <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  fetch('/B_getcartcount').then(r => r.json()).then(d => {
+    const el = document.getElementById('cart-count');
+    if (el) el.textContent = d.count ?? 0;
+  }).catch(() => {});
+
+  // Questions, grading and answers all live on the server (see /B_getquiz and /B_submitquiz).
+  let questions = [];
+  let userAnswers = [];
+  let currentQ = 0;
+  let passNeeded = 0;
+  let cartAnimals = [];
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function showState(name) {
+    ['state-empty', 'state-loading', 'state-intro', 'state-question', 'state-result'].forEach((id) => {
+      document.getElementById(id).style.display = id === name ? 'block' : 'none';
+    });
+  }
+
+  async function loadQuiz() {
+    showState('state-loading');
+    try {
+      const res = await fetch('/B_getquiz', { credentials: 'same-origin' });
+      const data = await res.json();
+      if (!res.ok || !data.success) { showState('state-empty'); return; }
+      questions = data.questions;
+      passNeeded = data.passNeeded;
+      cartAnimals = data.animals;
+      renderIntro();
+    } catch (e) {
+      showState('state-empty');
+    }
+  }
+
+  function renderIntro() {
+    document.getElementById('state-intro').innerHTML = `
+      <div class="quiz-intro">
+        <span class="quiz-badge">🎓 Buyer Screening</span>
+        <h1>Exotic Pet Care Quiz</h1>
+        <p>This quiz is based specifically on the animals in your cart. You need to pass to prove you're ready to care for them. Answer <strong>${passNeeded} out of ${questions.length}</strong> questions correctly to pass.</p>
+        <div class="quiz-animal-chips">
+          ${cartAnimals.map((name) => `<span class="animal-chip">${esc(name)}</span>`).join('')}
+        </div>
+        <div class="quiz-info-row">
+          <div class="quiz-info-chip"><span class="chip-icon">📝</span><p>${questions.length} Questions</p></div>
+          <div class="quiz-info-chip"><span class="chip-icon">✅</span><p>Pass: ${passNeeded}/${questions.length} correct</p></div>
+          <div class="quiz-info-chip"><span class="chip-icon">🐾</span><p>Your cart animals</p></div>
+        </div>
+        <div class="quiz-btn-row">
+          <a href="/care-guide" class="btn-outline">Study Care Guide</a>
+          <button class="btn-primary" onclick="startQuiz()">Start Quiz →</button>
+        </div>
+      </div>`;
+    showState('state-intro');
+  }
+
+  function startQuiz() {
+    userAnswers = new Array(questions.length).fill(null);
+    currentQ = 0;
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    const total = questions.length;
+    const pct = ((currentQ + 1) / total) * 100;
+    const isLast = currentQ === total - 1;
+
+    document.getElementById('state-question').innerHTML = `
+      <div class="quiz-question-wrap">
+        <div class="quiz-progress-label">Question ${currentQ + 1} of ${total}</div>
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+        <br/>
+        <span class="quiz-animal-tag">🐾 ${esc(q.animal)}</span>
+        <div class="quiz-q-text">${esc(q.q)}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `
+            <button class="quiz-option ${userAnswers[currentQ] === i ? 'selected' : ''}" onclick="selectAnswer(${i})" id="opt-${i}">
+              <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+              ${esc(opt)}
+            </button>`).join('')}
+        </div>
+        <div class="quiz-nav">
+          ${currentQ > 0 ? `<button class="btn-back" onclick="prevQuestion()">← Previous</button>` : `<div></div>`}
+          <button class="btn-primary" id="next-btn" onclick="nextQuestion()">${isLast ? 'Submit Quiz' : 'Next →'}</button>
+        </div>
+      </div>`;
+    showState('state-question');
+    // Re-apply the selected look to the saved answer when going back/forward
+    if (userAnswers[currentQ] !== null) selectAnswer(userAnswers[currentQ]);
+  }
+
+  function selectAnswer(i) {
+    userAnswers[currentQ] = i;
+    document.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+      btn.classList.toggle('selected', idx === i);
+      const letter = btn.querySelector('.option-letter');
+      letter.style.background = idx === i ? '#2563eb' : '#f3f4f6';
+      letter.style.color = idx === i ? 'white' : '#374151';
+    });
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; renderQuestion(); }
+  }
+
+  function nextQuestion() {
+    if (userAnswers[currentQ] === null) {
+      alert('Please select an answer before continuing.');
+      return;
+    }
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      submitQuiz();
+    }
+  }
+
+  async function submitQuiz() {
+    const btn = document.getElementById('next-btn');
+    if (btn) btn.disabled = true;
+    try {
+      const res = await fetch('/B_submitquiz', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: userAnswers })
+      });
+      const data = await res.json();
+      if (res.status === 409) { alert(data.message); loadQuiz(); return; }
+      if (!res.ok || !data.success) throw new Error(data.message || 'Quiz could not be submitted.');
+      renderResult(data);
+    } catch (error) {
+      alert(error.message || 'Quiz could not be submitted. Please try again.');
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  // The result shown always comes from the server, so the page can never say "passed" when checkout will refuse.
+  function renderResult(r) {
+    document.getElementById('state-result').innerHTML = `
+      <div class="quiz-result-wrap">
+        <div class="result-icon">${r.passed ? '🎉' : '📖'}</div>
+        <h2 class="${r.passed ? 'passed' : 'failed'}">${r.passed ? 'You Passed!' : 'Not Quite There'}</h2>
+        <div class="score-display">${r.score} / ${r.total}</div>
+        <p class="result-msg">${r.passed
+          ? "Great job! You've shown you're prepared to care for your animals. Proceed to checkout."
+          : `You need at least ${r.passNeeded} correct answers. Review the care guide for your specific animals and try again.`}</p>
+        <div class="answers-review">
+          ${r.review.map((item) => `
+            <div class="answer-row ${item.isCorrect ? 'correct' : 'wrong'}">
+              <span class="answer-icon">${item.isCorrect ? '✅' : '❌'}</span>
+              <div>
+                <div class="answer-animal">🐾 ${esc(item.animal)}</div>
+                <div class="answer-q">${esc(item.q)}</div>
+                ${!item.isCorrect ? `<div class="answer-yours">Your answer: ${esc(item.options[item.yourAnswer])}</div>` : ''}
+                <div class="answer-correct">Correct: ${esc(item.options[item.correct])}</div>
+                <div class="answer-explain">${esc(item.explain)}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+        <div class="result-actions">
+          ${r.passed
+            ? `<button class="btn-green" onclick="window.location.href='/checkout'">Proceed to Checkout →</button>`
+            : `<a href="/care-guide" class="btn-outline">Study Care Guide</a>
+               <button class="btn-primary" onclick="loadQuiz()">Try Again</button>`}
+        </div>
+      </div>`;
+    showState('state-result');
+  }
+
+  loadQuiz();
+  </script>
+</body>
+</html>

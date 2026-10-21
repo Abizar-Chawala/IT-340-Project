@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Care Guide - Exotic Pets Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .care-notice {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      color: #92400e;
+      font-size: 0.95rem;
+    }
+
+    .care-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .care-filter-btn {
+      padding: 10px 22px;
+      border: 2px solid #e5e7eb;
+      border-radius: 30px;
+      background: white;
+      color: #4b5563;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .care-filter-btn:hover,
+    .care-filter-btn.active {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .care-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .care-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .care-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .care-card-header {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .care-card-header.reptile {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    }
+
+    .care-card-header.bird {
+      background: linear-gradient(135deg, #fefce8, #fef08a);
+    }
+
+    .care-card-header.mammal {
+      background: linear-gradient(135deg, #fdf4ff, #f3e8ff);
+    }
+
+    .care-icon {
+      font-size: 2.2rem;
+    }
+
+    .care-card-header h3 {
+      font-size: 1.1rem;
+      color: #111827;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .difficulty {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .difficulty.beginner {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .difficulty.intermediate {
+      background: #fef9c3;
+      color: #a16207;
+    }
+
+    .difficulty.advanced {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .care-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .care-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: #374151;
+    }
+
+    .care-section h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .care-section p {
+      font-size: 0.88rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .care-cta {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: white;
+      border-radius: 16px;
+      padding: 48px;
+      text-align: center;
+    }
+
+    .care-cta h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .care-cta p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 28px;
+    }
+
+    .care-cta a {
+      display: inline-block;
+      padding: 14px 32px;
+      background: white;
+      color: #2563eb;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+
+    .care-cta a:hover {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .care-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .care-cta {
+        padding: 32px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="care-guide">
+  <header class="navbar">
+    <div class="logo">
+      <img src="/images/logo.png" alt="Critter Kingdom" class="logo-img" style="height:44px;width:auto;"
+        onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />
+      <span class="logo-text">Critter Kingdom</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Products</a>
+      <a href="/care-guide" class="active">Care Guide</a>
+      <a href="/cart">Cart (<span id="cart-count">0</span>)</a>
+      <a href="/login" class="nav-login-btn" id="nav-auth-link">Login</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <h1>🐾 Exotic Pet Care Guide</h1>
+      <p>Before you buy, learn what it takes to properly care for your new companion. Responsible ownership starts here.
+      </p>
+    </section>
+
+    <div class="care-notice">
+      <strong>⚠️ Important:</strong> Owning an exotic pet is a serious commitment. Always verify local laws and
+      regulations before purchasing — many exotic animals require permits or may be restricted in your area.
+    </div>
+
+    <div class="care-filters">
+      <button class="care-filter-btn active" onclick="filterCards('all', this)">All Animals</button>
+      <button class="care-filter-btn" onclick="filterCards('reptile', this)">🦎 Reptiles</button>
+      <button class="care-filter-btn" onclick="filterCards('bird', this)">🦜 Birds</button>
+      <button class="care-filter-btn" onclick="filterCards('mammal', this)">🐾 Mammals</button>
+    </div>
+
+    <div class="care-grid">
+
+      <div class="care-card" data-cat="reptile">
+        <div class="care-card-header reptile">
+          <span class="care-icon">🦎</span>
+          <div>
+            <h3>Blue-Tongued Skink</h3><span class="difficulty beginner">Beginner Friendly</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 15–20 years</span><span><strong>Size:</strong> 18–24
+              inches</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>40–55 gallon terrarium with a temperature gradient of 75–85°F (cool side) to 90–100°F (basking spot). UVB
+              lighting is essential for calcium metabolism.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Omnivores — mix of insects (crickets, dubia roaches), vegetables (leafy greens, squash), and fruits
+              (berries). Protein should make up about 60% of the diet.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Handle regularly from a young age to build trust. They rarely bite and are one of the most docile lizards
+              available — great for first-time reptile owners.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="reptile">
+        <div class="care-card-header reptile">
+          <span class="care-icon">🦎</span>
+          <div>
+            <h3>Panther Chameleon</h3><span class="difficulty intermediate">Intermediate</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 5–7 years</span><span><strong>Size:</strong> 12–20
+              inches</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Well-ventilated screen enclosure (24"×24"×48"). Humidity 50–70%. Chameleons drink water droplets, so
+              daily misting or a drip system is required.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Primarily insectivores — crickets, hornworms, and silkworms. Dust insects with calcium and vitamin
+              supplements 2–3 times per week.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Highly sensitive to stress — minimize handling. Color changes indicate mood and health. Not ideal for
+              frequent handling.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="reptile">
+        <div class="care-card-header reptile">
+          <span class="care-icon">🐍</span>
+          <div>
+            <h3>Ball Python</h3><span class="difficulty beginner">Beginner Friendly</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 20–30 years</span><span><strong>Size:</strong> 3–5
+              feet</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>40-gallon enclosure. Ambient 78–80°F, warm hide at 88–92°F. Provide multiple hides so the snake feels
+              secure and doesn't stress.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Feed pre-killed or frozen/thawed mice or rats every 1–2 weeks. Prey size should match the widest part of
+              the snake's body. Never feed live prey.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Hunger strikes during shedding or breeding season are normal. Always provide fresh water and a humid hide
+              to ease shedding.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="reptile">
+        <div class="care-card-header reptile">
+          <span class="care-icon">🐢</span>
+          <div>
+            <h3>Sulcata Tortoise</h3><span class="difficulty advanced">Advanced</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 70–100+ years</span><span><strong>Size:</strong> Up
+              to 200 lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Adults need a large outdoor pen — minimum 100 sq ft. They are incredible diggers and require deep
+              substrate or buried barriers. Indoor setups only for juveniles.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>High-fiber, low-protein herbivores. Feed grasses, hay, and leafy greens. Avoid fruit, high-protein foods,
+              and commercial pellets as a primary diet.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>This is a generational commitment — your tortoise may outlive you. Plan for their long-term care before
+              purchasing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="bird">
+        <div class="care-card-header bird">
+          <span class="care-icon">🦜</span>
+          <div>
+            <h3>Blue-and-Gold Macaw</h3><span class="difficulty advanced">Advanced</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 50–60 years</span><span><strong>Size:</strong> 32–34
+              inches</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Very large cage — minimum 3'×4'×5'. Daily out-of-cage time (4+ hours) is essential. They are loud and
+              need ample space to stretch their wings fully.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Quality pellets (60–70%) plus fresh fruits, vegetables, and healthy grains. Avocado, chocolate, onions,
+              and caffeine are all toxic to macaws.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Need daily social interaction and mental stimulation — without it, they develop feather-destructive
+              behaviors. Plan for a lifetime commitment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🦊</span>
+          <div>
+            <h3>Fennec Fox</h3><span class="difficulty intermediate">Intermediate</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 10–14 years</span><span><strong>Size:</strong>
+              1.5–3.5 lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Large escape-proof enclosure — they are expert diggers and climbers. Enclosures must have buried fencing.
+              Provide a large play area with supervision.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Omnivores — mix of quality dog/cat food, insects (mealworms, crickets), small rodents, and some fruits
+              and vegetables. Avoid grapes, raisins, and onions.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Nocturnal — most active at night. Legal in most US states but check local regulations. Requires a vet
+              experienced with exotic animals.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🐱</span>
+          <div>
+            <h3>Ring-Tailed Cat</h3><span class="difficulty advanced">Advanced</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 14–16 years</span><span><strong>Size:</strong>
+              1.5–2.5 lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Large vertical enclosures with climbing structures. Nocturnal and very fast. A secure, enrichment-filled
+              space with branches, shelves, and hiding spots is essential.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Omnivores — fruits, insects, small rodents, and vegetables. Avoid processed, high-sodium foods. Variety
+              is important.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Rarely truly domesticated — retain strong wild instincts. Proper socialization from a young age is
+              critical. Many owners find them difficult as adults.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🦡</span>
+          <div>
+            <h3>Tanuki (Raccoon Dog)</h3><span class="difficulty advanced">Advanced</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 6–11 years</span><span><strong>Size:</strong> 8–22
+              lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Large outdoor enclosures with dig-proof fencing. Strong and curious — weak enclosures won't hold them.
+              Provide shelter, enrichment, and companionship.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Omnivores — quality dog food, whole prey, fish, fruit, and vegetables. Prone to obesity; portion control
+              is especially important in winter.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Illegal in many US states — verify legality before purchasing. They hibernate in cold climates and
+              require special seasonal preparation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🌙</span>
+          <div>
+            <h3>Sugar Glider</h3><span class="difficulty intermediate">Intermediate</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 10–15 years</span><span><strong>Size:</strong> 4–5
+              inches</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Tall wire cage — minimum 24"×24"×36". Plenty of vertical climbing space. They are nocturnal. Always keep
+              in bonded pairs — they are highly social animals.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>The BML diet is widely recommended — fruits, protein, nectar, and supplements. Avoid simple sugars, corn,
+              and high-fat foods.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Nocturnal — sleep during the day and active at night. Lonely gliders develop depression and
+              self-mutilation. They make a loud "crabbing" sound when scared.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🐆</span>
+          <div>
+            <h3>Bengal Cat</h3><span class="difficulty intermediate">Intermediate</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 12–16 years</span><span><strong>Size:</strong> 8–15
+              lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Need space to run and climb. Large cat trees, wall-mounted shelves, and outdoor catios are highly
+              recommended. Should not be left alone for extended periods.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>High-protein diet — premium wet food or a raw diet rich in animal protein. Avoid filler-heavy dry kibble
+              as the primary diet.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Vocal, high-energy, and extremely intelligent. They love water and puzzle toys. Without stimulation they
+              become destructive.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">😺</span>
+          <div>
+            <h3>Sphynx Cat</h3><span class="difficulty beginner">Beginner Friendly</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 9–15 years</span><span><strong>Size:</strong> 6–12
+              lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Indoor-only — hairlessness makes them vulnerable to sunburn and cold. Keep indoor temperatures at
+              68–75°F. They love blankets and warm spots.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>High-calorie, protein-rich diet due to higher metabolism. Quality wet or dry food works well. Feed 2–3
+              times daily rather than free feeding.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Need weekly baths to prevent skin oil buildup. Clean their large ears regularly too. Super affectionate —
+              great lap cats that thrive on human company.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="care-card" data-cat="mammal">
+        <div class="care-card-header mammal">
+          <span class="care-icon">🐒</span>
+          <div>
+            <h3>Capuchin Monkey</h3><span class="difficulty advanced">Expert Only</span>
+          </div>
+        </div>
+        <div class="care-body">
+          <div class="care-stats"><span><strong>Lifespan:</strong> 35–45 years</span><span><strong>Size:</strong> 3–9
+              lbs</span></div>
+          <div class="care-section">
+            <h4>🏠 Housing</h4>
+            <p>Extremely large enclosure — ideally outdoor, 30+ sq ft with climbing structures, ropes, and foraging
+              opportunities. Cannot be kept indoors long-term.</p>
+          </div>
+          <div class="care-section">
+            <h4>🍽️ Diet</h4>
+            <p>Varied omnivore diet — fruits, vegetables, insects, eggs, and monkey biscuits. Nutritional deficiencies
+              cause serious health problems. Never feed junk food.</p>
+          </div>
+          <div class="care-section">
+            <h4>💡 Key Tips</h4>
+            <p>Illegal in many states and requires special permits. Highly intelligent — boredom leads to aggression.
+              This is a 40-year commitment requiring expert-level knowledge.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end care-grid -->
+
+    <div class="care-cta">
+      <h2>Ready to take the care quiz?</h2>
+      <p>Add an animal to your cart and take our short quiz to prove you're prepared. Passing is required before
+        checkout.</p>
+      <a href="/">Browse Animals</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Exotic Pets Store. Created by Mollie, Megha, Abizar, Danny, and Jivitesh.</p>
+  </footer>
+
+  <script src="/script.js" defer></script>
+  <script>
+    function filterCards(cat, btn) {
+      document.querySelectorAll('.care-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.care-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exotic Pets Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body data-page="products">
+  <header class="navbar">
+    <div class="logo">
+      <img src="/images/logo.png" alt="Critter Kingdom" class="logo-img" style="height:44px;width:auto;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />
+      <span class="logo-text">Critter Kingdom</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/" class="active">Products</a>
+      <a href="/care-guide">Care Guide</a>
+      <a href="/cart">Cart (<span id="cart-count">0</span>)</a>
+      <a href="/login" class="nav-login-btn" id="nav-auth-link">Login</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <h1>Our Exotic Pets</h1>
+      <p>Discover our collection of unique and fascinating exotic pets.</p>
+    </section>
+    <section class="products-section">
+      <div id="products-container" class="products-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Exotic Pets Store. Created by Mollie, Megha, Abizar, Danny, and Jivitesh.</p>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shopping Cart - Exotic Pets Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body data-page="cart">
+  <header class="navbar">
+    <div class="logo">
+      <img src="/images/logo.png" alt="Critter Kingdom" class="logo-img" style="height:44px;width:auto;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />
+      <span class="logo-text">Critter Kingdom</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Products</a>
+      <a href="/care-guide">Care Guide</a>
+      <a href="/cart" class="active">Cart (<span id="cart-count">0</span>)</a>
+      <a href="/login" class="nav-login-btn" id="nav-auth-link">Login</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="cart-container">
+      <div class="cart-main">
+        <div class="cart-header">
+          <h1>Shopping Cart</h1>
+          <p class="cart-item-count" id="item-count-text">0 items</p>
+        </div>
+        <div id="cart-items" class="cart-items-list"></div>
+        <div class="cart-actions">
+          <a href="/" class="continue-shopping">← Continue Shopping</a>
+        </div>
+      </div>
+
+      <div class="cart-sidebar">
+        <div class="order-summary-card">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="summary-value">$<span id="subtotal">0.00</span></span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span class="summary-value shipping-free">FREE</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (8%)</span>
+            <span class="summary-value">$<span id="tax">0.00</span></span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span class="summary-value">$<span id="total">0.00</span></span>
+          </div>
+
+          <button id="checkout-btn" class="checkout-button">
+            <span>Proceed to Checkout</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="quiz-gate-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+            </svg>
+            A short care quiz is required before checkout.
+          </div>
+
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>Secure Checkout</span>
+            </div>
+            <div class="trust-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Live Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="promo-banner">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="8" width="18" height="4" rx="1"/>
+            <path d="M12 8v13"/>
+            <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/>
+            <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+          </svg>
+          <div>
+            <strong>Free Shipping</strong>
+            <p>Included on every order</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Exotic Pets Store. Created by Mollie, Megha, Abizar, Danny, and Jivitesh.</p>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

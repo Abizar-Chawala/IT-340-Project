@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Confirmed - Exotic Pets Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .confirmation-container { max-width: 600px; margin: 60px auto; text-align: center; background: #fff; padding: 48px 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(15,23,42,.12); }
+    .success-icon { width: 80px; height: 80px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; animation: scaleIn .5s ease-out; }
+    .success-icon svg { width: 48px; height: 48px; stroke: white; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    @keyframes scaleIn { 0%{transform:scale(0)} 50%{transform:scale(1.1)} 100%{transform:scale(1)} }
+    .confirmation-container h1 { font-size: 2.5rem; color: #111827; margin-bottom: 16px; }
+    .confirmation-container p { color: #6b7280; font-size: 1.1rem; margin-bottom: 12px; line-height: 1.6; }
+    .order-details { background: #f9fafb; border-radius: 12px; padding: 24px; margin: 32px 0; border: 1px solid #e5e7eb; }
+    .order-details h3 { color: #374151; margin-bottom: 12px; font-size: 1.1rem; }
+    .order-details p { color: #6b7280; font-size: .95rem; margin-bottom: 8px; }
+    .action-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 32px; }
+    .btn-primary { padding: 14px 32px; border-radius: 10px; border: none; background: #2563eb; color: white; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all .2s; }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); }
+    .btn-secondary { padding: 14px 32px; border-radius: 10px; border: 2px solid #e5e7eb; background: white; color: #374151; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all .2s; }
+    .btn-secondary:hover { border-color: #2563eb; color: #2563eb; transform: translateY(-2px); }
+    .email-note { display: flex; align-items: center; justify-content: center; gap: 8px; background: #eff6ff; padding: 16px; border-radius: 10px; margin-top: 24px; border: 1px solid #dbeafe; }
+    .email-note svg { width: 20px; height: 20px; stroke: #2563eb; flex-shrink: 0; }
+    .email-note p { margin: 0; color: #1e40af; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="/images/logo.png" alt="Critter Kingdom" class="logo-img" style="height:44px;width:auto;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" />
+      <span class="logo-text">Critter Kingdom</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/">Back to Products</a>
+      <a href="/care-guide">Care Guide</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <div class="confirmation-container">
+      <div class="success-icon" id="success-icon" style="display:none">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h1 id="order-status-heading">Loading your order...</h1>
+      <p id="order-status-message">We’re verifying your order details.</p>
+      <p id="order-status-detail"></p>
+      <div class="order-details" id="order-details">
+        <p>Loading order summary...</p>
+      </div>
+      <div class="email-note" id="order-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <p>We’ll show your order summary here once it is verified.</p>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="window.location.href='/'">Continue Shopping</button>
+        <button class="btn-secondary" onclick="window.print()">Print Receipt</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Exotic Pets Store. Created by Mollie, Megha, Abizar, Danny, and Jivitesh.</p>
+  </footer>
+  <script src="/script.js" defer></script>
+  <script>
+    async function loadOrderSummary() {
+      const id = new URLSearchParams(window.location.search).get('id');
+      const container = document.getElementById('order-details');
+      if (!container) return;
+
+      const show = (html) => { container.innerHTML = '<h3>Order Summary</h3>' + html; };
+      const setUnavailable = (message) => {
+        document.getElementById('success-icon').style.display = 'none';
+        document.getElementById('order-status-heading').textContent = 'Order Not Confirmed';
+        document.getElementById('order-status-message').textContent = message;
+        document.getElementById('order-status-detail').textContent = 'Please check your order history or try again.';
+        document.getElementById('order-note').querySelector('p').textContent = 'We could not verify this order.';
+        show('<p>Order details are unavailable.</p>');
+      };
+
+      if (!id) {
+        setUnavailable('We could not find an order to display.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/B_getorders?id=' + encodeURIComponent(id), { credentials: 'same-origin' });
+        if (res.status === 401) {
+          window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname + window.location.search);
+          return;
+        }
+        if (!res.ok) throw new Error(`Order lookup failed: ${res.status}`);
+        const data = await res.json();
+        const order = (data.orders || [])[0];
+        if (!order || String(order.id) !== id) {
+          setUnavailable('We could not find that order.');
+          return;
+        }
+
+        const lines = order.items.map((i) => `<p>${escapeHTML(i.name)} × ${Number(i.quantity)}</p>`).join('');
+        const payment = order.payment && order.payment.method === 'card' && order.payment.last4
+          ? `Card ending in ${escapeHTML(order.payment.last4)}` : 'PayPal';
+        show(
+          `<p><strong>Order #:</strong> ${Number(order.id)}</p>` +
+          lines +
+          `<p><strong>Total:</strong> $${Number(order.total).toFixed(2)}</p>` +
+          `<p><strong>Payment:</strong> ${payment}</p>` +
+          `<p><strong>Email:</strong> ${escapeHTML(order.email)}</p>`
+        );
+        document.getElementById('success-icon').style.display = 'flex';
+        document.getElementById('order-status-heading').textContent = 'Order Confirmed!';
+        document.getElementById('order-status-message').textContent = 'Thank you for your purchase!';
+        document.getElementById('order-status-detail').textContent = 'Your exotic pets are on their way to their new home.';
+        document.getElementById('order-note').querySelector('p').textContent = 'Your order summary is saved to your account for this session.';
+      } catch (error) {
+        console.error('Failed to load order summary', error);
+        setUnavailable('We could not retrieve your order details.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadOrderSummary);
+  </script>
+</body>
+</html>
